@@ -21,21 +21,18 @@ to have a cellphone to utilize the service. Given your knowledge of ADTs, Youba 
 has contracted you to implement the platform for thier service.
 """
 
-def aQueueContents(AvailabilityQueue):
-    return AvailabilityQueue[2]
-
-def getAvailabilityQueue(LocationName):
-    for availabilityQueue in  availabilityQueue_LIST:
-        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
-            return availabilityQueue
         
-def getDriverInfo(ADT):
-    return ADT[1]
+#################################################################################
+# Driver Section
+#################################################################################
 
 def driver_make(firstName, lastName, carMakeAndModel1):
     numberOfTripsCompleted = 0
     return ("Driver", [firstName, lastName, carMakeAndModel1, \
             numberOfTripsCompleted] )
+
+def getDriverInfo(ADT):
+    return ADT[1]
 
 def driver_getFirstName(Driver):
     return getDriverInfo(Driver)[0]
@@ -53,13 +50,25 @@ def driver_increaseTripsCompleted(Driver):
     getDriverInfo(Driver)[3] = driver_getNumberOfTripsCompleted(Driver) + 1
 
 def driver_isNewDriver(Driver):
-    Num = driver_getNumberOfTripsCompleted(Driver)
-    if Num == 0:
+    num = driver_getNumberOfTripsCompleted(Driver)
+    if num == 0:
         return True
     return False
 
+#################################################################################
+# Availability Queue Section
+#################################################################################
+
 def availabilityQueue_make(Location):
     return ("AvailabilityQueue", Location, [])
+
+def aQueueContents(AvailabilityQueue):
+    return AvailabilityQueue[2]
+
+def getAvailabilityQueue(LocationName):
+    for availabilityQueue in  availabilityQueue_LIST:
+        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
+            return availabilityQueue
 
 def availabilityQueue_getLocationName(A_Queue):
     return getDriverInfo(A_Queue)
@@ -84,21 +93,22 @@ def availabilityQueue_isEmpty(A_Queue):
         return True
     return False
 
+#################################################################################
+# Global Queue Section
+#################################################################################
+
 availabilityQueue_UWI = availabilityQueue_make('UWI')
-
 availabilityQueue_Papine = availabilityQueue_make('Papine')
-
 availabilityQueue_Liguanea = availabilityQueue_make('Liguanea')
-
 availabilityQueue_HalfWayTree = availabilityQueue_make('Half-Way-Tree')
 
-def aQueueContents(AvailabilityQueue):
-    return AvailabilityQueue[2]
+# Creates a list of Available Locations
+availabilityQueue_LIST = [availabilityQueue_UWI, availabilityQueue_Papine, availabilityQueue_Liguanea, \
+                              availabilityQueue_HalfWayTree]
 
-def getAvailabilityQueue(LocationName):
-    for availabilityQueue in  availabilityQueue_LIST:
-        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
-            return availabilityQueue
+#################################################################################
+# Fair Calculation Section
+#################################################################################
         
 def calculateDiscount(PassengerTelephoneNumber):
     for Number, Failed_Attempts in knownPassengers.items():
@@ -115,6 +125,10 @@ def calculateFare(StartLocation, EndLocation, PassengerTelephoneNumber):
     if Discounted_Fare < 0.00:
         return 0.00
     return Discounted_Fare
+
+#################################################################################
+# Taxi Section
+#################################################################################
         
 def moveTaxi(startLocation, endLocation):
     if availabilityQueue_isEmpty( getAvailabilityQueue(startLocation) ):
@@ -146,19 +160,15 @@ def requestTaxi(PassengerTelephoneNumber, PassengerLocation, PassengerDestinatio
         else:
             return
 
-def aQueueContents(AvailabilityQueue):
-    return AvailabilityQueue[2]
+#################################################################################
+# Youba Section
+#################################################################################        
 
-def getAvailabilityQueue(LocationName):
-    for availabilityQueue in  availabilityQueue_LIST:
-        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
-            return availabilityQueue
-        
 def youba():
     Option = input('Enter "Y" to request a taxi or "N" to end use of the service for that period')
     count = 0
     while Option == "Y":
-        #reply = number, start, end
+        # Reply Format is: number, start, end
         x = list( passenger_list[count].strip().split() )
         requestTaxi( int(x[0]), x[1], x[2])
         count += 1
@@ -181,14 +191,9 @@ def youba():
                 Driver_List = aQueueContents(A_Queue)
                 print(availabilityQueue_getLocationName(A_Queue) + " - " + driver_getFirstName(Driver_List[n]) + " " + driver_getLastName(Driver_List[n]) + " " + driver_getCarMakeAndModel(Driver_List[n]))
 
-
-def aQueueContents(AvailabilityQueue):
-    return AvailabilityQueue[2]
-
-def getAvailabilityQueue(LocationName):
-    for availabilityQueue in  availabilityQueue_LIST:
-        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
-            return availabilityQueue
+#################################################################################
+# Youba Executer Section
+#################################################################################  
 
 def youba_main():
     request = input()
@@ -217,38 +222,41 @@ def youba_main():
             print(availabilityQueue_getLocationName(availabilityQueue) + ' - ' + driver_getFirstName(driver) + ' ' + \
                   driver_getLastName(driver) + ' ' + driver_getCarMakeAndModel(driver))
 
-availabilityQueue_LIST = [availabilityQueue_UWI, availabilityQueue_Papine, availabilityQueue_Liguanea, \
-                              availabilityQueue_HalfWayTree]
+#################################################################################
+# Main Section
+#################################################################################
+
 if __name__ == '__main__':
+    # Represent the number of Drivers to create
+    print("Please enter the number of Drivers you hired: \n")
     no_of_drivers = int(input())
+
+    # Creates the Drivers with input
     for i in range(no_of_drivers):
+        print("Enter the Drivers information.\nIn the format - \"FirstName, LastName, CarMake&Model, LocationDestination\"")
         driver_info = input().strip().split(',')
         driver = driver_make(driver_info[0], driver_info[1], driver_info[2])
         availabilityQueue_enqueue(getAvailabilityQueue(driver_info[3]), driver)
     no_of_passengers = int(input())
     passenger_list = []
+
     for i in range(no_of_passengers):
         passenger = input()
         passenger_list += [passenger]
     no_of_knownpassengers = int(input())
+
     knownPassengers = {}
     for i in range(no_of_knownpassengers):
         knownpassenger = list(map(int, input().strip().split()))
         key = knownpassenger[0]
         value = knownpassenger[1]
         knownPassengers[key] = value
+
+    # Cost price per travel
+    print("Please enter the price for a single travel: \n")
     fare = int(input())
+
     youba_main()
 
 #################################################################################
-#################################################################################
-
-"""
-Group Information:
-
-Member 1: 620117968
-Member 2: 620117112
-
-"""
-
 #################################################################################
