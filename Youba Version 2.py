@@ -120,7 +120,7 @@ def calculateDiscount(PassengerTelephoneNumber):
     knownPassengers[PassengerTelephoneNumber] = 0
     return 0.00
 
-def calculateFare(StartLocation, EndLocation, PassengerTelephoneNumber):
+def calculateFare(PassengerTelephoneNumber):
 
     Discount = calculateDiscount(PassengerTelephoneNumber)
         
@@ -148,8 +148,7 @@ def requestTaxi(PassengerTelephoneNumber, PassengerLocation, PassengerDestinatio
         print ("Start and end locations are the same!")
     else:
         # Fare for the trip is calculated
-        trip_fare = calculateFare(PassengerLocation, PassengerDestination, \
-                PassengerTelephoneNumber)
+        trip_fare = calculateFare(PassengerTelephoneNumber)
         print()
         print("Your fare is ${}.".format(trip_fare))
         print()
@@ -171,56 +170,21 @@ def requestTaxi(PassengerTelephoneNumber, PassengerLocation, PassengerDestinatio
 
 #################################################################################
 # Youba Section
-#################################################################################        
+#################################################################################
 
 def youba():
-    Option = input('Enter "Y" to request a taxi or "N" to end use of the service for that period.')
-    count = 0
-    while Option == "Y":
-        # Reply Format is: number, start, end
-        x = list( passenger_list[count].strip().split() )
-        requestTaxi( int(x[0]), x[1], x[2])
-        count += 1
-        Option = input('Enter "Y" to request a taxi or "N" to end use of the service for that period.')
-    
-    print()
-    if Option == "N":
-        for A_Queue in availabilityQueue_LIST:
-            if availabilityQueue_isEmpty(A_Queue):
-                pass
-            else:
-                Driver_List = aQueueContents(A_Queue)
-                for Driver in Driver_List:
-                    print(driver_getFirstName(Driver)+" "+driver_getLastName(Driver)+" "+ str(driver_getNumberOfTripsCompleted(Driver) ) )
-        for A_Queue in availabilityQueue_LIST:
-            if availabilityQueue_isEmpty(A_Queue):
-                pass
-            else:
-                n = 0
-                Driver_List = aQueueContents(A_Queue)
-                print(availabilityQueue_getLocationName(A_Queue) + " - " + driver_getFirstName(Driver_List[n]) + " " + driver_getLastName(Driver_List[n]) + " " + driver_getCarMakeAndModel(Driver_List[n]))
-
-#################################################################################
-# Youba Executer Section
-#################################################################################  
-
-def youba_main():
     print("\nWould you like to Request our services?")
     print("Enter Y for Yes")
     print("Enter N for No\n")
     request = input()
-    # n = -1
+    
     while (request == 'Y' or request == 'y'):
-        # n += 1
+
         print("What is your phone number?:")
-        # passenger = passenger_list[n].split()
-        # PassengerTelephoneNumber = int(passenger[0])
-        PassengerTelephoneNumber = input()
+        PassengerTelephoneNumber = int(input())
         print("What is your Location?:")
-        # PassengerLocation = passenger[1]
         PassengerLocation = input()
         print("What is your Destination?:")
-        # PassengerDestination = passenger[2]
         PassengerDestination = input()
 
         requestTaxi(PassengerTelephoneNumber, PassengerLocation, PassengerDestination)
@@ -268,19 +232,6 @@ if __name__ == '__main__':
         driver = driver_make(driver_info[0], driver_info[1], driver_info[2]) # Driver ADT is created
         availabilityQueue_enqueue(getAvailabilityQueue(driver_info[3]), driver) # Driver gets added to a location
 
-#################################################################################
-
-    # print("Enter the number of New Passengers that will use our Service.")
-    # print("Passengers that have never used our services before.")
-    # no_of_passengers = int(input())
-    # passenger_list = [] # Empty list of Passengers
-
-    # for i in range(no_of_passengers):
-    #     print()
-    #     print("Please enter the 7-digit phone number for Passenger {} along with the current Location and Travel Destination.".format(i+1))
-    #     print("Enter the Passengers information.\nIn the format - \"Phone-Number Current-Location Destination\"")
-    #     passenger = input()
-    #     passenger_list += [passenger]
 
     print("\nEnter the number of Previous Passengers that did use our Service.")
     print("Passengers that have used our services before.")
@@ -304,7 +255,7 @@ if __name__ == '__main__':
 
     print("Setup now completed.")
     print("Moving on into the User side.")
-    youba_main()
+    youba()
 
 #################################################################################
 #################################################################################
