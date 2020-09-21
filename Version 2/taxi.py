@@ -109,7 +109,7 @@ def request_taxi(passenger_phone_num, passenger_location, passenger_destination,
         if option == "Y" or option == "y":
             if q.is_a_queue_empty( q.get_a_queue(passenger_location, a_queue_list) ):
                 passengers[passenger_phone_num] += 1
-                print("*   Unfortunately, there are no drivers at that location.")
+                print("\n*   Unfortunately, there are no drivers at that location.")
                 print("*   We apologize for any inconvenience.")
                 print("*   You will receive a 10% discount on your next trip.")
             else:

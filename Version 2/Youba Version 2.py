@@ -64,18 +64,20 @@ def youba():
     print("Thank you for trying Youba. Please come again.\n")
     print("A list will be printed upon exit.")
     print("List of Drivers and Number of Jobs Completed.")
+    
     for a_queue in a_queue_list:
         for driver in q.get_queue_contents(a_queue):
             print(d.get_first_name(driver) + "\t" + d.get_last_name(driver) + "\t" + \
-                  str(d.get_trips_completed(driver)))
+                    str(d.get_trips_completed(driver)))
     print(lines)
     print("*   List of Locations and Drivers for those that worked today.")
-    print("* Current Location\t Driver Name\t Car Make & Model")
+    print("* Current Location\tDriver Name\tCar Make & Model")
+    
     for a_queue in a_queue_list:
         if not q.is_a_queue_empty(a_queue):
             driver = q.a_queue_front(a_queue)
-            print("* " + q.get_location(a_queue) + "\t" + d.get_first_name(driver) + "\t" + \
-                  d.get_last_name(driver) + "\t" + d.get_make_and_model(driver))
+            print("* " + q.get_location(a_queue) + "\t\t" + d.get_first_name(driver) + " " + \
+                  d.get_last_name(driver) + "\t\t" + d.get_make_and_model(driver))
 
 #################################################################################
 # Main Section
@@ -118,7 +120,6 @@ if __name__ == '__main__':
         
         driver_info = input().strip().split(",")
         driver = d.make_new_driver(driver_info[0], driver_info[1], driver_info[2]) # Driver ADT is created
-        d.add_driver(driver)
         q.a_queue_enqueue(q.get_a_queue(driver_info[3], a_queue_list), driver) # Driver gets added to a location
 
     print("\n" + lines)
