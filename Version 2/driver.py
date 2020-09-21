@@ -37,16 +37,16 @@ def get_driver_info(driver):
     return driver[1]
 
 # Gets the Drivers first name
-def get_first_name(driver_info):
-    return get_driver_info(driver_info)[0]
+def get_first_name(driver):
+    return get_driver_info(driver)[0]
 
 # Gets the Drivers last name
-def get_last_name(driver_info):
-    return get_driver_info(driver_info)[1]
+def get_last_name(driver):
+    return get_driver_info(driver)[1]
 
 # Gets the Drivers car make and model
-def get_make_and_model(driver_info):
-    return get_driver_info(driver_info)[2]
+def get_make_and_model(driver):
+    return get_driver_info(driver)[2]
 
 # Updates the Drivers car make and model
 def change_make_and_model(driver, new_make_model):
@@ -83,6 +83,15 @@ folder_name = "./Text-Files/"
 
 # Adds a Driver to the file
 def add_driver(driver):
+    """
+    Appends Drivers to the file
+    
+    Args:
+        driver: ADT of a Driver
+        
+    Returns:
+       None
+    """
 
     try:
         if os.path.exists(folder_name + file_name):
@@ -92,19 +101,19 @@ def add_driver(driver):
             # make a new file and write
             append_write = "w"
     except IOError as e:
-        print("Not allowed", e)
+        print("\nThere is an IO Error\n", e)
 
     first_name = get_first_name(driver)
     last_name = get_last_name(driver)
     make_model = get_make_and_model(driver)
     trips = get_trips_completed(driver)
 
-    file = open(file_name, append_write)
+    file = open(os.path.join(folder_name, file_name), append_write)
     file.write(first_name + "," + last_name + "," \
                + make_model + "," + str(trips) + "\n")
     file.close()
 
 # Adds a Driver to the file
 def remove_driver(driver):
+    # TODO: complete this, currently not urgent
     pass
-    #driver2 = make_driver("Delano","Thompson","Nissan,Sunny",7)

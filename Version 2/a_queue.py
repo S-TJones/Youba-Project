@@ -7,56 +7,98 @@ to have a cellphone to utilize the service. Given your knowledge of ADTs, Youba 
 has contracted you to implement the platform for thier service.
 """
 
+import os
+from driver import get_driver_info
 
 #################################################################################
 # Availability Queue Section
 #################################################################################
 
-def availabilityQueue_make(Location):
-    return ("AvailabilityQueue", Location, [])
+# List of Availability Queues
+a_queue_list = []
 
-def aQueueContents(AvailabilityQueue):
-    return AvailabilityQueue[2]
+# Creates an Availability Queue
+def make_availability_queue(location):
+    a_queue = ("AvailabilityQueue", location, [])
+    return a_queue
 
-def getAvailabilityQueue(LocationName):
-    for availabilityQueue in  availabilityQueue_LIST:
-        if availabilityQueue_getLocationName(availabilityQueue) == LocationName:
-            return availabilityQueue
-            
-    return availabilityQueue_make("")
+# Gets Availability Queue contents
+def get_queue_contents(a_queue):
+    return a_queue[2]
 
-def availabilityQueue_getLocationName(A_Queue):
-    return getDriverInfo(A_Queue)
+# Gets the Availability Queue from the list based on location
+def get_a_queue(location_name):
+    for a_queue in a_queue_list:
+        if get_location(a_queue) == location_name:
+            return a_queue
+    print("\nThere are no Availability Queues for this location.\n")
+    return make_availability_queue("")
 
-def availabilityQueue_front(A_Queue):
-    if availabilityQueue_isEmpty(A_Queue):
-        return "There are no Taxi Drivers present at the moment."
+# Check if an Availability Queue is empty/ doesn't exist...
+# ... this is separate from an availability queue not having drivers
+def is_a_queue(a_queue):
+    if get_location(a_queue) == "":
+        return False
+    return True
+
+# Gets the Availability Queue location name
+def get_location(a_queue):
+    return get_driver_info(a_queue)
+
+# Returns the first Driver in the Availability Queue list
+def a_queue_front(a_queue):
+    if is_a_queue_empty(a_queue):
+        print("\nThere are no Taxi Drivers present at the moment.\n")
+        return make_availability_queue("")
     else:
-        return aQueueContents(A_Queue)[0]
-    
-def availabilityQueue_enqueue(A_Queue, Driver):
-    aQueueContents(A_Queue).append(Driver)
-            
-def availabilityQueue_dequeue(A_Queue):
-    if availabilityQueue_isEmpty(A_Queue):
-        print("ERROR.\nThere are no Drivers at this Location to remove.")
-    else:
-        aQueueContents(A_Queue).pop(0)
+        return get_queue_contents(a_queue)[0]
 
-def availabilityQueue_isEmpty(A_Queue):
-    if aQueueContents(A_Queue) == []:
+# Adds a driver to an Availability Queue list
+def a_queue_enqueue(a_queue, driver):
+    get_queue_contents(a_queue).append(driver)
+
+# Removes a driver from an Availability Queue list
+def a_queue_dequeue(a_queue):
+    if is_a_queue_empty(a_queue):
+        print("\nERROR.\nThere are no Drivers at this Location to remove.\n")
+    else:
+        get_queue_contents(a_queue).pop(0)
+
+# Checks to see if an Availability Queue is Empty
+def is_a_queue_empty(a_queue):
+    if get_queue_contents(a_queue) == []:
         return True
     return False
 
+# Adds an Availability Queue to the list of Availability Queues
+def add_a_queue(a_queue):
+    a_queue_list.append(a_queue)
+
+# Removes an Availability Queue from the list of Availability Queues
+def remove_a_queue(a_queue):
+    x = -1
+    for i in range(len(a_queue_list)):
+        if a_queue_list[i] == a_queue:
+            x = i
+            break
+    
+    if x != -1:
+        a_queue_list.pop(x)
+    else:
+        print("\nThere are no Availability Queues for this location.\n")
+
 #################################################################################
-# Global Queue Section
+# Global Availability Queue Section
 #################################################################################
 
-availabilityQueue_UWI = availabilityQueue_make('UWI')
-availabilityQueue_Papine = availabilityQueue_make('Papine')
-availabilityQueue_Liguanea = availabilityQueue_make('Liguanea')
-availabilityQueue_HalfWayTree = availabilityQueue_make('Half-Way-Tree')
+# Makes new Availability Queues
+a_queue_UWI = make_availability_queue("UWI")
+a_queue_Papine = make_availability_queue("Papine")
+a_queue_Liguanea = make_availability_queue("Liguanea")
+a_queue_HalfWayTree = make_availability_queue("Half-Way-Tree")
 
-# Creates a list of Available Locations
-availabilityQueue_LIST = [availabilityQueue_UWI, availabilityQueue_Papine, availabilityQueue_Liguanea, \
-                              availabilityQueue_HalfWayTree]
+# Adds to the list of Available Queues
+add_a_queue(a_queue_UWI)
+add_a_queue(a_queue_Papine)
+add_a_queue(a_queue_Liguanea)
+add_a_queue(a_queue_HalfWayTree)

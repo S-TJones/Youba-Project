@@ -7,63 +7,68 @@ to have a cellphone to utilize the service. Given your knowledge of ADTs, Youba 
 has contracted you to implement the platform for thier service.
 """
 
+import a_queue as q
+from driver import increase_trips_completed
 
 #################################################################################
 # Fair Calculation Section
 #################################################################################
-        
-def calculateDiscount(PassengerTelephoneNumber):
-    for Number, Failed_Attempts in knownPassengers.items():
-        if Number == PassengerTelephoneNumber:
-            return Failed_Attempts * 0.10
 
-    knownPassengers[PassengerTelephoneNumber] = 0
+# Calculates the discount for a customer
+def calculate_discount(phone_num):
+    for number, failed_attempts in known_passengers.items():
+        if number == phone_num:
+            return failed_attempts * 0.10
+
+    known_passengers[phone_num] = 0
     return 0.00
 
-def calculateFare(PassengerTelephoneNumber):
+# Calculates the final fare for the customer
+def calculate_fare(phone_num):
 
-    Discount = calculateDiscount(PassengerTelephoneNumber)
+    discount = calculate_discount(phone_num)
         
-    Discounted_Fare = fare - (fare*Discount)
+    discounted_fare = fare - (fare*discount)
         
-    if Discounted_Fare < 0.00:
+    if discounted_fare < 0.00:
         return 0.00
-    return Discounted_Fare
+    return discounted_fare
 
 #################################################################################
 # Taxi Section
 #################################################################################
-        
-def moveTaxi(startLocation, endLocation):
-    if availabilityQueue_isEmpty( getAvailabilityQueue(startLocation) ):
-        print("No driver at location.")
+
+# Moves a Driver from one location to the other
+def move_taxi(start_location, end_location):
+    if q.is_a_queue_empty( q.get_a_queue(start_location) ):
+        print("No driver at location.\n")
     else:
-        Driver = availabilityQueue_front( getAvailabilityQueue(startLocation) )
-        availabilityQueue_dequeue( getAvailabilityQueue(startLocation) )
-        availabilityQueue_enqueue( getAvailabilityQueue(endLocation), Driver)
-        driver_increaseTripsCompleted(Driver)
+        driver = q.a_queue_front( q.get_a_queue(start_location) )
+        q.a_queue_dequeue( q.get_a_queue(start_location) )
+        q.a_queue_enqueue( q.get_a_queue(end_location), driver)
+        increase_trips_completed(driver)
             
-def requestTaxi(PassengerTelephoneNumber, PassengerLocation, PassengerDestination):
-    if PassengerLocation == PassengerDestination:
-        print ("Start and end locations are the same!")
+def request_taxi(passenger_phone_num, passenger_location, passenger_destination):
+    if passenger_location == passenger_destination:
+        print ("Start and end locations are the same!\n")
     else:
         # Fare for the trip is calculated
-        trip_fare = calculateFare(PassengerTelephoneNumber)
+        trip_fare = calculate_fare(passenger_phone_num)
         print()
         print("Your fare is ${}.".format(trip_fare))
         print()
 
-        option = input('Enter "Y" to confirm the trip or "N" to cancel - ')
+        option = input("\nEnter \"Y\" to confirm the trip or \"N\" to cancel - ")
         if option == "Y" or option == "y":
-            if availabilityQueue_isEmpty( getAvailabilityQueue(PassengerLocation) ):
-                knownPassengers[PassengerTelephoneNumber] += 1
+            if q.is_a_queue_empty( q.get_a_queue(passenger_location) ):
+                known_passengers[passenger_phone_num] += 1
                 print("Unfortunately, there are no drivers at that location.")
                 print("We apologize for any inconvenience.")
-                print("You will receive a 10% discount on your next trip.")
+                print("You will receive a 10% discount on your next trip.\n")
                 print()
             else:
-                print("\nA Taxi is on the way.\n")
-                moveTaxi(PassengerLocation, PassengerDestination)
+                print("A Taxi is on the way.\n")
+                move_taxi(passenger_location, passenger_destination)
         else:
             print()
-            print("")
+            print("Cancelling trip\n")
