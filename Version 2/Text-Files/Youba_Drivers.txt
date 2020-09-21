@@ -1,3 +1,3 @@
-Carlton,Drake,Toyota,Camry,0
-Rolando,Smith,Toyota,Rav4,4
-Delano,Thompson,Nissan,Sunny,7
+Delano,Thompson,Nissan|Sunny,7
+Carlton,Drake,Toyota|Camry,2
+Rolando,Smith,Toyota|Rav4,4
