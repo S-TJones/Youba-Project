@@ -178,3 +178,107 @@ def remove_a_queue(a_queue, a_queue_list):
     else:
         print("There are no Availability Queues for this location.\n")
 
+#################################################################################
+# Driver Files Section
+#################################################################################
+
+# File with all the Driver Information
+file_name = "Youba_Locations.txt"
+folder_name = "./Text-Files/"
+
+def add_location(a_queue):
+    """
+    Appends Drivers to the file in a specified format
+    
+    Args:
+        driver: ADT of a Driver
+        
+    Returns:
+       None
+    """
+    
+    try:
+        # Makes a folder if it doesn't exist
+        os.makedirs(folder_name)
+    except FileExistsError:
+        # directory already exists
+        pass
+    
+    
+    try:
+        # Checks to see if path exists
+        if os.path.exists(folder_name + file_name):
+            # append if the file already exists
+            append_write = "a"
+        else:
+            # make a new file and write
+            append_write = "w"
+    except IOError as e:
+        print("\nThere is an IO Error\n", e)
+
+    first_name = get_first_name(driver)
+    last_name = get_last_name(driver)
+    make_model = get_make_and_model(driver)
+    trips = get_trips_completed(driver)
+
+    file = open(os.path.join(folder_name, file_name), append_write)
+    file.write(first_name + "," + last_name + "," \
+               + make_model + "," + str(trips) + "\n")
+    file.close()
+
+def read_drivers():
+    """
+    """
+
+    # A list to store the Drivers
+    driver_list = list()
+
+    with open( os.path.join(folder_name, file_name), "r") as reader:
+        for line in reader.readlines():
+            file_line = line.strip().split(",")
+            
+            f_name = file_line[0]
+            l_name = file_line[1]
+            make_model = file_line[2]
+            trips = int(file_line[3])
+            
+            driver = make_driver(f_name, l_name, make_model, trips)
+            driver_list.append(driver)
+            
+    reader.close()
+    return driver_list
+
+# Adds a Driver to the file
+def remove_driver(driver):
+    """
+
+
+    Args:
+
+
+    Returns:
+        None
+    """
+    # TODO: complete this, currently not urgent
+    driver_list = read_drivers()
+    position = -1
+
+    if driver in driver_list:
+        position = driver_list.index(driver)
+    else:
+        print("*   This Driver doesn't work with us.")
+
+    if position != -1:
+        driver_list.pop(position)
+        
+        with open(os.path.join(folder_name, file_name), "w") as file:
+            for drivers in driver_list:
+                first_name = get_first_name(drivers)
+                last_name = get_last_name(drivers)
+                make_model = get_make_and_model(drivers)
+                trips = get_trips_completed(drivers)
+
+                file.write(first_name + "," + last_name + "," \
+                           + make_model + "," + str(trips) + "\n")
+        print("*   Driver has been removed.")
+    file.close()
