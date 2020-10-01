@@ -18,10 +18,10 @@ def welcome(user):
 def admin_options():
     print(get_lines() + "\n*")
     print("*   Wold you like to:")
-    print("*\t\t1 - ")
-    print("*\t\t2 - ")
-    print("*\t\t3 - ")
-    print("*\t\t4 - ")
+    print("*\t\t1 - Hire a NEW Driver")
+    print("*\t\t2 - View Drivers")
+    print("*\t\t3 - Assign Drivers to Locations")
+    print("*\t\t4 - Exit")
     print(get_lines())
 
 def customer_options():
@@ -32,3 +32,13 @@ def customer_options():
     print("*\t\t3 - Check for Discount")
     print("*\t\t4 - Exit")
     print(get_lines())
+
+def exit_user(user):
+    print(get_lines() + "\n*")
+    print("* Exiting " + user + " view")
+    print("*\n" + get_lines())
+
+def close_function():
+    print(get_lines() + "\n*")
+    print("* THANK YOU\n* FOR TRYING YOUBA")
+    print("\n*\n" + get_lines())
